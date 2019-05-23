@@ -8,7 +8,7 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
+import Vue from 'vue';
 export default Vue.extend({
   computed: {
     authUrl() {
@@ -16,8 +16,8 @@ export default Vue.extend({
         process.env.CLIENT_ID
       }&scope=user-read-currently-playing&redirect_uri=${encodeURIComponent(
         location.href
-      )}`
+      )}`;
     }
   }
-})
+});
 </script>

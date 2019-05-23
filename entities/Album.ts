@@ -1,6 +1,6 @@
-import { AlbumCover } from './AlbumCover'
+import { AlbumCover } from './AlbumCover';
 
 export interface Album {
-  name: string
-  images: AlbumCover[]
+  name: string;
+  images: AlbumCover[];
 }

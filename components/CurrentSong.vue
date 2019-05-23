@@ -10,11 +10,11 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
+import Vue from 'vue';
 
-import { AlbumCover } from '../entities/AlbumCover'
-import { Artist } from '../entities/Artist'
-import { Song } from '../entities/Song'
+import { AlbumCover } from '../entities/AlbumCover';
+import { Artist } from '../entities/Artist';
+import { Song } from '../entities/Song';
 
 export default Vue.extend({
   props: {
@@ -26,24 +26,24 @@ export default Vue.extend({
   computed: {
     albumCover(): AlbumCover | undefined {
       if (!this.song) {
-        return undefined
+        return undefined;
       }
 
-      const images: AlbumCover[] = this.song.album.images
+      const images: AlbumCover[] = this.song.album.images;
 
-      return images.find(image => image.width > 64 && image.width < 400)
+      return images.find(image => image.width > 64 && image.width < 400);
     },
     artist() {
       if (!this.song) {
-        return undefined
+        return undefined;
       }
 
-      const artists: Artist[] = this.song.artists
+      const artists: Artist[] = this.song.artists;
 
-      return artists.map(({ name }) => name).join(',')
+      return artists.map(({ name }) => name).join(',');
     }
   }
-})
+});
 </script>
 
 <style>
