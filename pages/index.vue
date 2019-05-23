@@ -5,7 +5,7 @@
     </a>
     <div v-else class="marquee">
       <div class="w-full flex items-center justify-center">
-        <img class="h-screen z-10" v-if="album" :src="album.url" />
+        <img class="h-screen z-10" v-if="albumCover" :src="albumCover.url" />
         <h1 class="z-0 whitespace-no-wrap text-white">
           {{ song.name }} - {{ artist }}
         </h1>
@@ -18,15 +18,9 @@
 import Vue from 'vue'
 import axios from 'axios'
 
-interface Image {
-  url: string
-  height: number
-  width: number
-}
-
-interface Artist {
-  name: string
-}
+import { Song } from '~/entities/Song'
+import { AlbumCover } from '../entities/AlbumCover'
+import { Artist } from '../entities/Artist'
 
 export default Vue.extend({
   computed: {
@@ -40,12 +34,12 @@ export default Vue.extend({
     showLogin() {
       return !(this as any).song
     },
-    album(): Image | undefined {
+    albumCover(): AlbumCover | undefined {
       if (!(this as any).song) {
         return undefined
       }
 
-      const images: Image[] = (this as any).song.album.images
+      const images: AlbumCover[] = (this as any).song.album.images
 
       return images.find(image => image.width > 64 && image.width < 400)
     },
@@ -73,7 +67,7 @@ export default Vue.extend({
       { headers: { Authorization: `Bearer ${token}` } }
     )
 
-    return { song: data.item }
+    return { song: data.item as Song }
   }
 })
 </script>
