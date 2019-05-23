@@ -1,14 +1,7 @@
 <template>
   <section class="w-full h-full items-center justify-center flex bg-black">
     <LoginWithSpotify v-if="showLogin"></LoginWithSpotify>
-    <div v-else class="marquee">
-      <div class="w-full flex items-center justify-center">
-        <img class="h-screen z-10" v-if="albumCover" :src="albumCover.url" />
-        <h1 class="z-0 whitespace-no-wrap text-white">
-          {{ song.name }} - {{ artist }}
-        </h1>
-      </div>
-    </div>
+    <CurrentSong v-else :song="song"></CurrentSong>
   </section>
 </template>
 
@@ -17,36 +10,18 @@ import Vue from 'vue'
 import axios from 'axios'
 
 import LoginWithSpotify from '~/components/LoginWithSpotify.vue'
+import CurrentSong from '~/components/CurrentSong.vue'
 
 import { Song } from '~/entities/Song'
-import { AlbumCover } from '../entities/AlbumCover'
-import { Artist } from '../entities/Artist'
 
 export default Vue.extend({
   components: {
-    LoginWithSpotify
+    LoginWithSpotify,
+    CurrentSong
   },
   computed: {
     showLogin() {
       return !(this as any).song
-    },
-    albumCover(): AlbumCover | undefined {
-      if (!(this as any).song) {
-        return undefined
-      }
-
-      const images: AlbumCover[] = (this as any).song.album.images
-
-      return images.find(image => image.width > 64 && image.width < 400)
-    },
-    artist() {
-      if (!(this as any).song) {
-        return undefined
-      }
-
-      const artists: Artist[] = (this as any).song.artists
-
-      return artists.map(({ name }) => name).join(',')
     }
   },
   async asyncData() {
@@ -75,26 +50,5 @@ export default Vue.extend({
   justify-content: center;
   align-items: center;
   text-align: center;
-}
-
-.marquee {
-  width: 100%;
-  overflow: hidden;
-}
-.marquee h1 {
-  font-size: 3em;
-  width: 100%;
-  height: 100%;
-  line-height: 50px;
-  transform: translateY(-50%);
-  animation: marquee 15s linear infinite;
-}
-@keyframes marquee {
-  0% {
-    transform: translateX(100%);
-  }
-  100% {
-    transform: translateX(-100%);
-  }
 }
 </style>
