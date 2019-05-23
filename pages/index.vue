@@ -1,72 +1,110 @@
 <template>
-  <section class="container">
-    <div>
-      <logo />
-      <h1 class="title">
-        current-song
-      </h1>
-      <h2 class="subtitle">
-        Display the current song from different streaming services
-      </h2>
-      <div class="links">
-        <a href="https://nuxtjs.org/" target="_blank" class="button--green"
-          >Documentation</a
-        >
-        <a
-          href="https://github.com/nuxt/nuxt.js"
-          target="_blank"
-          class="button--grey"
-          >GitHub</a
-        >
+  <section class="w-full h-full items-center justify-center flex bg-black">
+    <a v-if="showLogin" :href="authUrl">
+      Login with Spotify
+    </a>
+    <div v-else class="marquee">
+      <div class="w-full flex items-center justify-center">
+        <img class="h-screen z-10" v-if="album" :src="album.url" />
+        <h1 class="z-0 whitespace-no-wrap text-white">
+          {{ song.name }} - {{ artist }}
+        </h1>
       </div>
     </div>
   </section>
 </template>
 
-<script>
-import Logo from '~/components/Logo.vue'
+<script lang="ts">
+import Vue from 'vue'
+import axios from 'axios'
 
-export default {
-  components: {
-    Logo
-  }
+interface Image {
+  url: string
+  height: number
+  width: number
 }
+
+interface Artist {
+  name: string
+}
+
+export default Vue.extend({
+  computed: {
+    authUrl() {
+      return `https://accounts.spotify.com/authorize?response_type=token&client_id=${
+        process.env.CLIENT_ID
+      }&scope=user-read-currently-playing&redirect_uri=${encodeURIComponent(
+        location.href
+      )}`
+    },
+    showLogin() {
+      return !(this as any).song
+    },
+    album(): Image | undefined {
+      if (!(this as any).song) {
+        return undefined
+      }
+
+      const images: Image[] = (this as any).song.album.images
+
+      return images.find(image => image.width > 64 && image.width < 400)
+    },
+    artist() {
+      if (!(this as any).song) {
+        return undefined
+      }
+
+      const artists: Artist[] = (this as any).song.artists
+
+      return artists.map(({ name }) => name).join(',')
+    }
+  },
+  async asyncData() {
+    if (!location.hash.includes('access_token')) {
+      return {}
+    }
+
+    const token = location.hash
+      .split('#access_token=')[1]
+      .split('&token_type=')[0]
+
+    const { data } = await axios.get(
+      'https://api.spotify.com/v1/me/player/currently-playing',
+      { headers: { Authorization: `Bearer ${token}` } }
+    )
+
+    return { song: data.item }
+  }
+})
 </script>
 
 <style>
-/* Sample `apply` at-rules with Tailwind CSS
 .container {
-  @apply min-h-screen flex justify-center items-center text-center mx-auto;
-}
-*/
-.container {
-  margin: 0 auto;
-  min-height: 100vh;
+  margin: 0 0;
   display: flex;
   justify-content: center;
   align-items: center;
   text-align: center;
 }
 
-.title {
-  font-family: 'Quicksand', 'Source Sans Pro', -apple-system, BlinkMacSystemFont,
-    'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-  display: block;
-  font-weight: 300;
-  font-size: 100px;
-  color: #35495e;
-  letter-spacing: 1px;
+.marquee {
+  width: 100%;
+  overflow: hidden;
 }
-
-.subtitle {
-  font-weight: 300;
-  font-size: 42px;
-  color: #526488;
-  word-spacing: 5px;
-  padding-bottom: 15px;
+.marquee h1 {
+  font-size: 3em;
+  width: 100%;
+  height: 100%;
+  line-height: 50px;
+  transform: translateY(-50%);
+  animation: marquee 15s linear infinite;
 }
-
-.links {
-  padding-top: 15px;
+@keyframes marquee {
+  0% {
+    transform: translateX(100%);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
 }
 </style>
