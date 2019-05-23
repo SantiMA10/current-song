@@ -70,16 +70,23 @@ export default Vue.extend({
       };
     },
     resetTimeout() {
+      const song: Song = (this as any).song;
+
+      if (!song) {
+        return;
+      }
+
       if ((this as any).timeout) {
         clearTimeout((this as any).timeout);
       }
 
-      const song: Song = (this as any).song;
+      // I add 15 to be sure than the song is finished
+      const whenToRefresh = song.duration_ms - song.progress_ms + 15;
 
-      (this as any).timeout = setTimeout(() => {
-        this.$set(this, 'song', (this as any).getCurrentSong());
+      (this as any).timeout = setTimeout(async () => {
+        this.$set(this, 'song', await (this as any).getCurrentSong());
         (this as any).resetTimeout();
-      }, song.duration_ms);
+      }, whenToRefresh);
     }
   }
 });
