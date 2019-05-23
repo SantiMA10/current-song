@@ -6,4 +6,5 @@ export interface Song {
   artists: Artist[]
   name: string
   duration_ms: number // eslint-disable-line camelcase
+  progress_ms: number // eslint-disable-line camelcase
 }

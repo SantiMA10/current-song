@@ -38,7 +38,49 @@ export default Vue.extend({
       { headers: { Authorization: `Bearer ${token}` } }
     )
 
-    return { song: data.item as Song }
+    return {
+      song: {
+        ...data.item,
+        progress_ms: data.progress_ms
+      } as Song
+    }
+  },
+  data() {
+    return {
+      timeout: (null as unknown) as NodeJS.Timeout
+    }
+  },
+  mounted() {
+    this.resetTimeout()
+  },
+  methods: {
+    async getCurrentSong(): Promise<Song> {
+      const token = location.hash
+        .split('#access_token=')[1]
+        .split('&token_type=')[0]
+
+      const { data } = await axios.get(
+        'https://api.spotify.com/v1/me/player/currently-playing',
+        { headers: { Authorization: `Bearer ${token}` } }
+      )
+
+      return {
+        ...data.item,
+        progress_ms: data.progress_ms
+      }
+    },
+    resetTimeout() {
+      if (this.timeout) {
+        clearTimeout(this.timeout)
+      }
+
+      const song: Song = (this as any).song
+
+      this.timeout = setTimeout(() => {
+        this.$set(this, 'song', this.getCurrentSong())
+        this.resetTimeout()
+      }, song.duration_ms)
+    }
   }
 })
 </script>
