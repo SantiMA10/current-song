@@ -1,6 +1,6 @@
-import NuxtConfiguration from '@nuxt/config';
+import NuxtConfiguration from '@nuxt/config'
 
-const pkg = require('./package');
+const pkg = require('./package')
 
 const config: NuxtConfiguration = {
   mode: 'spa',
@@ -9,7 +9,7 @@ const config: NuxtConfiguration = {
    ** Headers of the page
    */
   head: {
-    title: pkg.name,
+    title: 'Current song',
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
@@ -63,10 +63,10 @@ const config: NuxtConfiguration = {
           test: /\.(js|vue)$/,
           loader: 'eslint-loader',
           exclude: /(node_modules)/
-        });
+        })
       }
     }
   }
-};
+}
 
-export default config;
+export default config
