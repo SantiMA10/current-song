@@ -1,8 +1,6 @@
 <template>
   <section class="w-full h-full items-center justify-center flex bg-black">
-    <a v-if="showLogin" :href="authUrl">
-      Login with Spotify
-    </a>
+    <LoginWithSpotify v-if="showLogin"></LoginWithSpotify>
     <div v-else class="marquee">
       <div class="w-full flex items-center justify-center">
         <img class="h-screen z-10" v-if="albumCover" :src="albumCover.url" />
@@ -18,19 +16,17 @@
 import Vue from 'vue'
 import axios from 'axios'
 
+import LoginWithSpotify from '~/components/LoginWithSpotify.vue'
+
 import { Song } from '~/entities/Song'
 import { AlbumCover } from '../entities/AlbumCover'
 import { Artist } from '../entities/Artist'
 
 export default Vue.extend({
+  components: {
+    LoginWithSpotify
+  },
   computed: {
-    authUrl() {
-      return `https://accounts.spotify.com/authorize?response_type=token&client_id=${
-        process.env.CLIENT_ID
-      }&scope=user-read-currently-playing&redirect_uri=${encodeURIComponent(
-        location.href
-      )}`
-    },
     showLogin() {
       return !(this as any).song
     },
