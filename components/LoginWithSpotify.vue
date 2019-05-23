@@ -12,7 +12,7 @@ import Vue from 'vue';
 export default Vue.extend({
   computed: {
     authUrl() {
-      return `https://accounts.spotify.com/authorize?response_type=token&NUXT_ENV_CLIENT_ID=${
+      return `https://accounts.spotify.com/authorize?response_type=token&client_id=${
         process.env.NUXT_ENV_CLIENT_ID
       }&scope=user-read-currently-playing&redirect_uri=${encodeURIComponent(
         location.href
