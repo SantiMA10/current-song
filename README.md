@@ -1,10 +1,10 @@
-# current-song
+# Current song [![Netlify Status](https://api.netlify.com/api/v1/badges/2203c94a-cbf6-4591-8434-dffb1c312e1d/deploy-status)](https://app.netlify.com/sites/current-song/deploys)
 
 > Display the current song from different streaming services
 
 ## Build Setup
 
-``` bash
+```bash
 # install dependencies
 $ yarn install
 

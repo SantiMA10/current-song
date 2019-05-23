@@ -11,3 +11,9 @@
   from = "/*"
   to = "/index.html"
   status = 200
+
+[[redirects]]
+  from = "https://current-song.netlify.com/*"
+  to = "https://current-song.santiagomartin.dev/:splat"
+  status = 301
+  force = true
