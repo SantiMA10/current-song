@@ -1,6 +1,6 @@
-import NuxtConfiguration from '@nuxt/config'
+import NuxtConfiguration from '@nuxt/config';
 
-const pkg = require('./package')
+const pkg = require('./package');
 
 const config: NuxtConfiguration = {
   mode: 'spa',
@@ -63,10 +63,10 @@ const config: NuxtConfiguration = {
           test: /\.(js|vue)$/,
           loader: 'eslint-loader',
           exclude: /(node_modules)/
-        })
+        });
       }
     }
   }
-}
+};
 
-export default config
+export default config;
