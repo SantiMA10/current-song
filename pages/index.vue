@@ -1,5 +1,5 @@
 <template>
-  <section class="w-full h-full items-center justify-center flex bg-black">
+  <section class="w-full h-screen items-center justify-center flex bg-black">
     <LoginWithSpotify v-if="showLogin"></LoginWithSpotify>
     <CurrentSong v-else :song="song"></CurrentSong>
   </section>
