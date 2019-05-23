@@ -38,6 +38,7 @@ const config: NuxtConfiguration = {
    */
   modules: [
     // Doc: https://axios.nuxtjs.org/usage
+    '@nuxtjs/dotenv',
     '@nuxtjs/axios'
   ],
   /*
