@@ -5,13 +5,16 @@ import { SET_CURRENT_PLAYING, SET_ERROR } from './mutation-types';
 import { Song } from '~/entities/Song';
 
 const state = {
-  currentPlaying: {},
+  currentPlaying: null,
   error: false
 };
 
 const mutations = {
   [SET_CURRENT_PLAYING](state, currentPlaying) {
     Vue.set(state, 'currentPlaying', currentPlaying);
+  },
+  [SET_ERROR](state, error) {
+    state.error = error;
   }
 };
 
@@ -31,14 +34,18 @@ const actions = {
 };
 
 const getters = {
-  getSong({ currentPlaying }): Song {
+  getSong({ currentPlaying }): Song | null {
+    if (!currentPlaying) {
+      return null;
+    }
+
     return {
       ...currentPlaying.item,
       progress_ms: currentPlaying.progress_ms
     };
   },
   isPlaying({ currentPlaying }): boolean {
-    return currentPlaying.is_playing;
+    return currentPlaying && currentPlaying.is_playing;
   },
   isError({ error }): boolean {
     return error;

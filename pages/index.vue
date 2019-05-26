@@ -33,7 +33,8 @@ export default Vue.extend({
   },
   data() {
     return {
-      timeout: (null as unknown) as NodeJS.Timeout
+      timeout: (null as unknown) as NodeJS.Timeout,
+      token: null
     };
   },
   computed: {
@@ -46,16 +47,20 @@ export default Vue.extend({
       return !(this as any).song;
     }
   },
-  fetch({ store }) {
+  async asyncData({ store }) {
     if (!location.hash.includes('access_token')) {
-      return Promise.resolve();
+      return {};
     }
 
     const token = location.hash
       .split('#access_token=')[1]
       .split('&token_type=')[0];
 
-    return store.dispatch('spotify/fetchCurrentSong', { token });
+    await store.dispatch('spotify/fetchCurrentSong', { token });
+
+    return {
+      token
+    };
   },
   mounted() {
     this.resetTimeout();
@@ -63,7 +68,7 @@ export default Vue.extend({
   methods: {
     ...mapActions('spotify', ['fetchCurrentSong']),
     resetTimeout() {
-      if ((this as any).error || !(this as any).song) {
+      if ((this as any).error || !(this as any).song || !this.token) {
         return;
       }
 
@@ -76,11 +81,7 @@ export default Vue.extend({
       const whenToRefresh = song.duration_ms - song.progress_ms + 15;
 
       this.timeout = setTimeout(async () => {
-        const token = location.hash
-          .split('#access_token=')[1]
-          .split('&token_type=')[0];
-
-        await (this as any).fetchCurrentSong({ token });
+        await (this as any).fetchCurrentSong({ token: this.token });
         this.resetTimeout();
       }, whenToRefresh);
     }
