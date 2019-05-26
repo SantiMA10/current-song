@@ -2,14 +2,14 @@
   <section
     class="w-full h-screen items-center justify-center flex flex-col bg-black"
   >
-    <div v-if="error" class="text-white text-5xl">
+    <div v-if="error" class="text-white text-3xl">
       😅 Your spotify token is not working, try to login again 😅
     </div>
     <template v-else>
       <Welcome v-if="showLogin"> </Welcome>
       <template v-else>
         <CurrentSong v-if="isPlaying" :song="song" />
-        <div class="text-white text-5xl" v-else>
+        <div class="text-white text-3xl" v-else>
           🎼 You're not listening to music 🎼
         </div>
       </template>
@@ -19,33 +19,20 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import { mapGetters, mapActions } from 'vuex';
+import { namespace } from 'vuex-class';
+import Component from 'vue-class-component';
 
 import CurrentSong from '~/components/CurrentSong.vue';
 import Welcome from '~/components/Welcome.vue';
 
 import { Song } from '../entities/Song';
 
-export default Vue.extend({
+const spotify = namespace('spotify');
+
+@Component({
   components: {
     Welcome,
     CurrentSong
-  },
-  data() {
-    return {
-      timeout: (null as unknown) as NodeJS.Timeout,
-      token: null
-    };
-  },
-  computed: {
-    ...mapGetters('spotify', {
-      song: 'getSong',
-      error: 'isError',
-      isPlaying: 'isPlaying'
-    }),
-    showLogin() {
-      return !(this as any).song;
-    }
   },
   async asyncData({ store }) {
     if (!location.hash.includes('access_token')) {
@@ -63,30 +50,41 @@ export default Vue.extend({
     };
   },
   mounted() {
-    (this as any).resetTimeout();
-  },
-  methods: {
-    ...mapActions('spotify', ['fetchCurrentSong']),
-    resetTimeout() {
-      if ((this as any).error || !(this as any).song || !(this as any).token) {
-        return;
-      }
-
-      if ((this as any).timeout) {
-        clearTimeout((this as any).timeout);
-      }
-
-      const song: Song = (this as any).song as Song;
-      // I add 15 to be sure than the song is finished
-      const whenToRefresh = song.duration_ms - song.progress_ms + 15;
-
-      (this as any).timeout = setTimeout(async () => {
-        await (this as any).fetchCurrentSong({ token: (this as any).token });
-        (this as any).resetTimeout();
-      }, whenToRefresh);
-    }
+    (this as Index).resetTimeout();
   }
-});
+})
+export default class Index extends Vue {
+  public timeout!: NodeJS.Timeout;
+  public token!: string;
+
+  @spotify.Getter('getSong') public song!: Song;
+  @spotify.Getter('isError') public error!: boolean;
+  @spotify.Getter('isPlaying') public isPlaying!: boolean;
+
+  @spotify.Action('fetchCurrentSong') public fetchCurrentSong!: Function;
+
+  public get showLogin() {
+    return !this.song;
+  }
+
+  public resetTimeout() {
+    if (this.error || !this.song || !this.token) {
+      return;
+    }
+
+    if (this.timeout) {
+      clearTimeout(this.timeout);
+    }
+
+    // I add 15 to be sure than the song is finished
+    const whenToRefresh = this.song.duration_ms - this.song.progress_ms + 15;
+
+    this.timeout = setTimeout(async () => {
+      await this.fetchCurrentSong({ token: this.token });
+      this.resetTimeout();
+    }, whenToRefresh);
+  }
+}
 </script>
 
 <style>
