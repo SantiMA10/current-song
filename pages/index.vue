@@ -19,12 +19,12 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import axios from 'axios';
+import { mapGetters, mapActions } from 'vuex';
 
 import CurrentSong from '~/components/CurrentSong.vue';
 import Welcome from '~/components/Welcome.vue';
 
-import { Song } from '~/entities/Song';
+import { Song } from '../entities/Song';
 
 export default Vue.extend({
   components: {
@@ -33,85 +33,55 @@ export default Vue.extend({
   },
   data() {
     return {
-      timeout: (null as unknown) as NodeJS.Timeout,
-      song: (null as unknown) as Song,
-      error: false
+      timeout: (null as unknown) as NodeJS.Timeout
     };
   },
   computed: {
+    ...mapGetters('spotify', {
+      song: 'getSong',
+      error: 'isError',
+      isPlaying: 'isPlaying'
+    }),
     showLogin() {
       return !(this as any).song;
     }
   },
-  async asyncData() {
+  fetch({ store }) {
     if (!location.hash.includes('access_token')) {
-      return {};
+      return Promise.resolve();
     }
 
     const token = location.hash
       .split('#access_token=')[1]
       .split('&token_type=')[0];
 
-    try {
-      const { data } = await axios.get(
-        'https://api.spotify.com/v1/me/player/currently-playing',
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
-
-      return {
-        isPlaying: data.is_playing,
-        song: {
-          ...data.item,
-          progress_ms: data.progress_ms
-        } as Song
-      };
-    } catch {
-      return {
-        error: true
-      };
-    }
+    return store.dispatch('spotify/fetchCurrentSong', { token });
   },
   mounted() {
-    (this as any).resetTimeout();
+    this.resetTimeout();
   },
   methods: {
-    async getCurrentSong(): Promise<Song> {
-      const token = location.hash
-        .split('#access_token=')[1]
-        .split('&token_type=')[0];
-
-      const { data } = await axios.get(
-        'https://api.spotify.com/v1/me/player/currently-playing',
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
-
-      return {
-        isPlaying: data.is_playing,
-        ...data.item,
-        progress_ms: data.progress_ms
-      };
-    },
+    ...mapActions('spotify', ['fetchCurrentSong']),
     resetTimeout() {
-      const song: Song = (this as any).song;
-
-      if (!song) {
+      if ((this as any).error || !(this as any).song) {
         return;
       }
 
-      if ((this as any).timeout) {
-        clearTimeout((this as any).timeout);
+      if (this.timeout) {
+        clearTimeout(this.timeout);
       }
 
+      const song: Song = (this as any).song as Song;
       // I add 15 to be sure than the song is finished
       const whenToRefresh = song.duration_ms - song.progress_ms + 15;
 
-      (this as any).timeout = setTimeout(async () => {
-        try {
-          this.$set(this, 'song', await (this as any).getCurrentSong());
-          (this as any).resetTimeout();
-        } catch {
-          this.error = true;
-        }
+      this.timeout = setTimeout(async () => {
+        const token = location.hash
+          .split('#access_token=')[1]
+          .split('&token_type=')[0];
+
+        await (this as any).fetchCurrentSong({ token });
+        this.resetTimeout();
       }, whenToRefresh);
     }
   }
