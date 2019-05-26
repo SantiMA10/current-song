@@ -1,7 +1,7 @@
 <template>
-  <div class="marquee">
-    <div class="w-full flex items-center justify-center">
-      <img v-if="albumCover" class="h-screen z-10" :src="albumCover.url" />
+  <div class="w-full flex items-center justify-center">
+    <img v-if="albumCover" class="h-screen z-10" :src="albumCover.url" />
+    <div class="marquee">
       <h1 class="z-0 whitespace-no-wrap text-white">
         {{ song.name }} - {{ artist }}
       </h1>
