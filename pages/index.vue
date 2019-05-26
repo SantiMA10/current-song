@@ -2,12 +2,17 @@
   <section
     class="w-full h-screen items-center justify-center flex flex-col bg-black"
   >
-    <Welcome v-if="showLogin"> </Welcome>
+    <div v-if="error" class="text-white text-5xl">
+      😅 Your spotify token is not working, try to login again 😅
+    </div>
     <template v-else>
-      <CurrentSong v-if="isPlaying" :song="song" />
-      <div class="text-white text-5xl" v-else>
-        🎼 You're not listening to music 🎼
-      </div>
+      <Welcome v-if="showLogin"> </Welcome>
+      <template v-else>
+        <CurrentSong v-if="isPlaying" :song="song" />
+        <div class="text-white text-5xl" v-else>
+          🎼 You're not listening to music 🎼
+        </div>
+      </template>
     </template>
   </section>
 </template>
@@ -29,7 +34,8 @@ export default Vue.extend({
   data() {
     return {
       timeout: (null as unknown) as NodeJS.Timeout,
-      song: (null as unknown) as Song
+      song: (null as unknown) as Song,
+      error: false
     };
   },
   computed: {
@@ -46,18 +52,24 @@ export default Vue.extend({
       .split('#access_token=')[1]
       .split('&token_type=')[0];
 
-    const { data } = await axios.get(
-      'https://api.spotify.com/v1/me/player/currently-playing',
-      { headers: { Authorization: `Bearer ${token}` } }
-    );
+    try {
+      const { data } = await axios.get(
+        'https://api.spotify.com/v1/me/player/currently-playing',
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
 
-    return {
-      isPlaying: data.is_playing,
-      song: {
-        ...data.item,
-        progress_ms: data.progress_ms
-      } as Song
-    };
+      return {
+        isPlaying: data.is_playing,
+        song: {
+          ...data.item,
+          progress_ms: data.progress_ms
+        } as Song
+      };
+    } catch {
+      return {
+        error: true
+      };
+    }
   },
   mounted() {
     (this as any).resetTimeout();
@@ -94,8 +106,12 @@ export default Vue.extend({
       const whenToRefresh = song.duration_ms - song.progress_ms + 15;
 
       (this as any).timeout = setTimeout(async () => {
-        this.$set(this, 'song', await (this as any).getCurrentSong());
-        (this as any).resetTimeout();
+        try {
+          this.$set(this, 'song', await (this as any).getCurrentSong());
+          (this as any).resetTimeout();
+        } catch {
+          this.error = true;
+        }
       }, whenToRefresh);
     }
   }
