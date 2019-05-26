@@ -63,26 +63,26 @@ export default Vue.extend({
     };
   },
   mounted() {
-    this.resetTimeout();
+    (this as any).resetTimeout();
   },
   methods: {
     ...mapActions('spotify', ['fetchCurrentSong']),
     resetTimeout() {
-      if ((this as any).error || !(this as any).song || !this.token) {
+      if ((this as any).error || !(this as any).song || !(this as any).token) {
         return;
       }
 
-      if (this.timeout) {
-        clearTimeout(this.timeout);
+      if ((this as any).timeout) {
+        clearTimeout((this as any).timeout);
       }
 
       const song: Song = (this as any).song as Song;
       // I add 15 to be sure than the song is finished
       const whenToRefresh = song.duration_ms - song.progress_ms + 15;
 
-      this.timeout = setTimeout(async () => {
-        await (this as any).fetchCurrentSong({ token: this.token });
-        this.resetTimeout();
+      (this as any).timeout = setTimeout(async () => {
+        await (this as any).fetchCurrentSong({ token: (this as any).token });
+        (this as any).resetTimeout();
       }, whenToRefresh);
     }
   }
