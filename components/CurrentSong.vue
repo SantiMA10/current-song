@@ -40,7 +40,7 @@ export default Vue.extend({
 
       const artists: Artist[] = this.song.artists;
 
-      return artists.map(({ name }) => name).join(',');
+      return artists.map(({ name }) => name).join(', ');
     }
   }
 });
