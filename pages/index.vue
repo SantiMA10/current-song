@@ -2,23 +2,13 @@
   <section
     class="w-full h-screen items-center justify-center flex flex-col bg-black"
   >
-    <div
-      v-if="showLogin"
-      class="text-white flex items-center justify-center flex-col"
-    >
-      <h1 class="text-3xl">
-        🎵 Current song 🎵
-      </h1>
-      <p class="ml-8 mr-8 pt-4 pb-4">
-        Login with Spotify and get an URL you can add to OBS (or other streaming
-        programs) to show your audiciente your current Spotify song.
-      </p>
-      <LoginWithSpotify />
-      <footer class="text-white pt-4">
-        Made with ❤ by <a href="https://santiagomartin.dev">@SantiMA10</a>
-      </footer>
-    </div>
-    <CurrentSong v-else :song="song" />
+    <Welcome v-if="showLogin"> </Welcome>
+    <template v-else>
+      <CurrentSong v-if="isPlaying" :song="song" />
+      <div class="text-white text-5xl" v-else>
+        🎼 You're not listening to music 🎼
+      </div>
+    </template>
   </section>
 </template>
 
@@ -26,19 +16,20 @@
 import Vue from 'vue';
 import axios from 'axios';
 
-import LoginWithSpotify from '~/components/LoginWithSpotify.vue';
 import CurrentSong from '~/components/CurrentSong.vue';
+import Welcome from '~/components/Welcome.vue';
 
 import { Song } from '~/entities/Song';
 
 export default Vue.extend({
   components: {
-    LoginWithSpotify,
+    Welcome,
     CurrentSong
   },
   data() {
     return {
-      timeout: (null as unknown) as NodeJS.Timeout
+      timeout: (null as unknown) as NodeJS.Timeout,
+      song: (null as unknown) as Song
     };
   },
   computed: {
@@ -61,6 +52,7 @@ export default Vue.extend({
     );
 
     return {
+      isPlaying: data.is_playing,
       song: {
         ...data.item,
         progress_ms: data.progress_ms
@@ -82,6 +74,7 @@ export default Vue.extend({
       );
 
       return {
+        isPlaying: data.is_playing,
         ...data.item,
         progress_ms: data.progress_ms
       };
