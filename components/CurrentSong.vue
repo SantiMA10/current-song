@@ -25,19 +25,11 @@ export default Vue.extend({
   },
   computed: {
     albumCover(): AlbumCover | undefined {
-      if (!this.song) {
-        return undefined;
-      }
-
       const images: AlbumCover[] = this.song.album.images;
 
       return images.find(image => image.width > 64 && image.width < 400);
     },
     artists() {
-      if (!this.song) {
-        return undefined;
-      }
-
       const artists: Artist[] = this.song.artists;
 
       return artists.map(({ name }) => name).join(', ');
