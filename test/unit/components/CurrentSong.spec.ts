@@ -6,16 +6,6 @@ import { AlbumCover } from '~/entities/AlbumCover';
 import { Artist } from '~/entities/Artist';
 
 describe('CurrentSong', () => {
-  it('renders', () => {
-    const subject = mount(CurrentSong, {
-      propsData: {
-        song: new SongBuilder().getInstance()
-      }
-    });
-
-    expect(subject.isVueInstance()).toBeTruthy();
-  });
-
   it('not renders the album cover if there is images', () => {
     const subject = mount(CurrentSong, {
       propsData: {
@@ -85,5 +75,20 @@ describe('CurrentSong', () => {
 
     expect(songComponent.exists()).toBeTruthy();
     expect(songComponent.text()).toContain(artists[0].name);
+  });
+
+  it('renders the song name', () => {
+    const song = new SongBuilder().getInstance();
+
+    const subject = mount(CurrentSong, {
+      propsData: {
+        song
+      }
+    });
+
+    const songComponent = subject.find('.qa-song');
+
+    expect(songComponent.exists()).toBeTruthy();
+    expect(songComponent.text()).toContain(song.name);
   });
 });
