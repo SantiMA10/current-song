@@ -37,7 +37,7 @@
     "eslint-config-prettier": "^4.3.0",
     "eslint-config-standard": ">=12.0.0",
     "eslint-loader": "^2.0.0",
-    "eslint-plugin-import": ">=2.14.0",
+    "eslint-plugin-import": ">=2.17.3",
     "eslint-plugin-jest": ">=21.24.1",
     "eslint-plugin-node": ">=7.0.1",
     "eslint-plugin-nuxt": ">=0.4.2",
