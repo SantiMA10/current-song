@@ -48,7 +48,7 @@
     "jest": "^24.1.0",
     "nodemon": "^1.18.9",
     "prettier": "1.17.1",
-    "tailwindcss": "^1.0.1",
+    "tailwindcss": "^1.0.2",
     "ts-jest": "^24.0.2",
     "vue-jest": "^3.0.3"
   }
