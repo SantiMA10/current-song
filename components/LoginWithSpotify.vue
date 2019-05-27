@@ -9,15 +9,22 @@
 
 <script lang="ts">
 import Vue from 'vue';
-export default Vue.extend({
-  computed: {
-    authUrl() {
-      return `https://accounts.spotify.com/authorize?response_type=token&client_id=${
-        process.env.NUXT_ENV_CLIENT_ID
-      }&scope=user-read-currently-playing&redirect_uri=${encodeURIComponent(
-        location.href.slice(0, -1)
-      )}`;
-    }
+import Component from 'vue-class-component';
+import { Prop } from 'vue-property-decorator';
+
+@Component({})
+export default class LoginWithSpotify extends Vue {
+  @Prop({ type: String, default: process.env.NUXT_ENV_CLIENT_ID })
+  public readonly clientId!: string;
+  @Prop({ type: String, default: location.href.slice(0, -1) })
+  public readonly redirectUri!: string;
+
+  public get authUrl() {
+    return `https://accounts.spotify.com/authorize?response_type=token&client_id=${
+      this.clientId
+    }&scope=user-read-currently-playing&redirect_uri=${encodeURIComponent(
+      this.redirectUri
+    )}`;
   }
-});
+}
 </script>
