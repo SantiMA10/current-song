@@ -3,6 +3,7 @@ import { mount } from '@vue/test-utils';
 import CurrentSong from '~/components/CurrentSong.vue';
 import { SongBuilder } from '~/test/builder/SongBuilder';
 import { AlbumCover } from '~/entities/AlbumCover';
+import { Artist } from '~/entities/Artist';
 
 describe('CurrentSong', () => {
   it('renders', () => {
@@ -39,7 +40,50 @@ describe('CurrentSong', () => {
 
     const image = subject.find('img');
 
-    expect(image).not.toBeNull();
+    expect(image.exists()).toBeTruthy();
     expect(image.attributes('src')).toEqual('https://picsum.photos/200');
+  });
+
+  it('renders multiple artist names', () => {
+    const artists: Artist[] = [
+      {
+        name: 'artist 1'
+      },
+      {
+        name: 'artist 2'
+      }
+    ];
+
+    const subject = mount(CurrentSong, {
+      propsData: {
+        song: new SongBuilder().with({ artists }).getInstance()
+      }
+    });
+
+    const songComponent = subject.find('.qa-song');
+
+    expect(songComponent.exists()).toBeTruthy();
+    expect(songComponent.text()).toContain(
+      artists.map(({ name }) => name).join(', ')
+    );
+  });
+
+  it('renders one artist name', () => {
+    const artists: Artist[] = [
+      {
+        name: 'artist 1'
+      }
+    ];
+
+    const subject = mount(CurrentSong, {
+      propsData: {
+        song: new SongBuilder().with({ artists }).getInstance()
+      }
+    });
+
+    const songComponent = subject.find('.qa-song');
+
+    expect(songComponent.exists()).toBeTruthy();
+    expect(songComponent.text()).toContain(artists[0].name);
   });
 });

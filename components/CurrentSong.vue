@@ -2,8 +2,8 @@
   <div class="w-full flex items-center justify-center">
     <img v-if="albumCover" class="h-screen z-10" :src="albumCover.url" />
     <div class="marquee">
-      <h1 class="z-0 whitespace-no-wrap text-white">
-        {{ song.name }} - {{ artist }}
+      <h1 class="z-0 whitespace-no-wrap text-white qa-song">
+        {{ song.name }} - {{ artists }}
       </h1>
     </div>
   </div>
@@ -33,7 +33,7 @@ export default Vue.extend({
 
       return images.find(image => image.width > 64 && image.width < 400);
     },
-    artist() {
+    artists() {
       if (!this.song) {
         return undefined;
       }
