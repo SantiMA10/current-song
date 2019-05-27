@@ -46,7 +46,7 @@
     "eslint-plugin-standard": ">=4.0.0",
     "eslint-plugin-vue": "^5.0.0",
     "jest": "^24.1.0",
-    "nodemon": "^1.18.9",
+    "nodemon": "^1.19.1",
     "prettier": "1.17.1",
     "tailwindcss": "^1.0.1",
     "ts-jest": "^24.0.2",
