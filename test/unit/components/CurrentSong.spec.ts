@@ -91,4 +91,14 @@ describe('CurrentSong', () => {
     expect(songComponent.exists()).toBeTruthy();
     expect(songComponent.text()).toContain(song.name);
   });
+
+  it('renders', () => {
+    const subject = mount(CurrentSong, {
+      propsData: {
+        song: new SongBuilder().getInstance()
+      }
+    });
+
+    expect(subject.element).toMatchSnapshot();
+  });
 });

@@ -1,0 +1,21 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`CurrentSong renders 1`] = `
+<div
+  class="w-full flex items-center justify-center"
+>
+  <!---->
+   
+  <div
+    class="marquee"
+  >
+    <h1
+      class="z-0 whitespace-no-wrap text-white qa-song"
+    >
+      
+      I'm a song - Artist
+    
+    </h1>
+  </div>
+</div>
+`;
