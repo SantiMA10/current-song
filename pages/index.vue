@@ -6,10 +6,10 @@
       😅 Your spotify token is not working, try to login again 😅
     </div>
     <template v-else>
-      <Welcome v-if="showLogin"> </Welcome>
+      <Welcome v-if="showLogin" />
       <template v-else>
         <CurrentSong v-if="isPlaying" :song="song" />
-        <div class="text-white text-3xl" v-else>
+        <div v-else class="text-white text-3xl">
           🎼 You're not listening to music 🎼
         </div>
       </template>
