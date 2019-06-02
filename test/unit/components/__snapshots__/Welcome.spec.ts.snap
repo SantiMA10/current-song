@@ -21,14 +21,9 @@ exports[`Welcome renders 1`] = `
   
   </p>
    
-  <a
-    class="bg-green-500 p-2 rounded-full m-2 hover:bg-green-400 shadow"
-    href="https://accounts.spotify.com/authorize?response_type=token&client_id=undefined&scope=user-read-currently-playing&redirect_uri=http%3A%2F%2Flocalhost"
-  >
-    
-  Login with Spotify
-
-  </a>
+  <loginwithspotify-stub
+    redirecturi="http://localhost"
+  />
    
   <footer
     class="text-white pt-4"
