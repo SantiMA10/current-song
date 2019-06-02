@@ -64,7 +64,7 @@ export default class Index extends Vue {
   @spotify.Action('fetchCurrentSong') public fetchCurrentSong!: Function;
 
   public get showLogin() {
-    return !this.song;
+    return !this.token;
   }
 
   public resetTimeout() {
