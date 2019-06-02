@@ -4,10 +4,10 @@ import axios from 'axios';
 import { SET_CURRENT_PLAYING, SET_ERROR } from './mutation-types';
 import { Song } from '~/entities/Song';
 
-const state = {
+const state = () => ({
   currentPlaying: null,
   error: false
-};
+});
 
 const mutations = {
   [SET_CURRENT_PLAYING](state, currentPlaying) {
