@@ -10,5 +10,7 @@ module.exports = {
     '^.+\\.js$': 'babel-jest',
     '.*\\.(vue)$': 'vue-jest'
   },
-  snapshotSerializers: ['jest-serializer-vue']
+  snapshotSerializers: ['jest-serializer-vue'],
+  testURL: 'http://testhost/',
+  setupFiles: ['<rootDir>/test/setup.ts']
 };
