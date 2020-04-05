@@ -21,7 +21,7 @@ import LoginWithSpotify from '~/components/LoginWithSpotify.vue';
 
 export default Vue.extend({
   components: {
-    LoginWithSpotify
-  }
+    LoginWithSpotify,
+  },
 });
 </script>

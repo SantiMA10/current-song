@@ -6,7 +6,7 @@ import { Song } from '~/entities/Song';
 
 const state = () => ({
   currentPlaying: null,
-  error: false
+  error: false,
 });
 
 const mutations = {
@@ -15,13 +15,15 @@ const mutations = {
   },
   [SET_ERROR](state, error) {
     state.error = error;
-  }
+  },
 };
 
 const actions = {
   async fetchCurrentSong({ commit }, { token }) {
     try {
-      const { data } = await axios.get(
+      const {
+        data,
+      } = await axios.get(
         'https://api.spotify.com/v1/me/player/currently-playing',
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -30,7 +32,7 @@ const actions = {
     } catch {
       commit(SET_ERROR, true);
     }
-  }
+  },
 };
 
 const getters = {
@@ -41,7 +43,7 @@ const getters = {
 
     return {
       ...currentPlaying.item,
-      progress_ms: currentPlaying.progress_ms
+      progress_ms: currentPlaying.progress_ms,
     };
   },
   isPlaying({ currentPlaying }): boolean {
@@ -49,12 +51,12 @@ const getters = {
   },
   isError({ error }): boolean {
     return error;
-  }
+  },
 };
 
 export default {
   state,
   mutations,
   actions,
-  getters
+  getters,
 };

@@ -12,8 +12,8 @@ describe('LoginWithSpotify', () => {
     const subject = mount(LoginWithSpotify, {
       propsData: {
         clientId: 'clientId',
-        redirectUri: 'redirectUri'
-      }
+        redirectUri: 'redirectUri',
+      },
     });
 
     expect((subject.vm as any).authUrl).toContain('clientId');

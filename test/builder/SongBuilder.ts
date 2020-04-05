@@ -7,15 +7,15 @@ export class SongBuilder {
     name: "I'm a song",
     artists: [
       {
-        name: 'Artist'
-      }
+        name: 'Artist',
+      },
     ],
     album: {
       images: [],
-      name: 'Album'
+      name: 'Album',
     },
     progress_ms: 0,
-    duration_ms: 0
+    duration_ms: 0,
   };
 
   public with(song: DeepPartial<Song>) {

@@ -9,8 +9,8 @@ describe('CurrentSong', () => {
   it('not renders the album cover if there is images', () => {
     const subject = mount(CurrentSong, {
       propsData: {
-        song: new SongBuilder().getInstance()
-      }
+        song: new SongBuilder().getInstance(),
+      },
     });
 
     expect(subject.find('img').exists()).toBeFalsy();
@@ -19,13 +19,13 @@ describe('CurrentSong', () => {
   it('renders the album cover with width between 64 and 400 pixels', () => {
     const images: AlbumCover[] = [
       { url: 'https://picsum.photos/10', width: 10, height: 10 },
-      { url: 'https://picsum.photos/200', width: 200, height: 200 }
+      { url: 'https://picsum.photos/200', width: 200, height: 200 },
     ];
 
     const subject = mount(CurrentSong, {
       propsData: {
-        song: new SongBuilder().with({ album: { images } }).getInstance()
-      }
+        song: new SongBuilder().with({ album: { images } }).getInstance(),
+      },
     });
 
     const image = subject.find('img');
@@ -37,17 +37,17 @@ describe('CurrentSong', () => {
   it('renders multiple artist names', () => {
     const artists: Artist[] = [
       {
-        name: 'artist 1'
+        name: 'artist 1',
       },
       {
-        name: 'artist 2'
-      }
+        name: 'artist 2',
+      },
     ];
 
     const subject = mount(CurrentSong, {
       propsData: {
-        song: new SongBuilder().with({ artists }).getInstance()
-      }
+        song: new SongBuilder().with({ artists }).getInstance(),
+      },
     });
 
     const songComponent = subject.find('.qa-song');
@@ -61,14 +61,14 @@ describe('CurrentSong', () => {
   it('renders one artist name', () => {
     const artists: Artist[] = [
       {
-        name: 'artist 1'
-      }
+        name: 'artist 1',
+      },
     ];
 
     const subject = mount(CurrentSong, {
       propsData: {
-        song: new SongBuilder().with({ artists }).getInstance()
-      }
+        song: new SongBuilder().with({ artists }).getInstance(),
+      },
     });
 
     const songComponent = subject.find('.qa-song');
@@ -82,8 +82,8 @@ describe('CurrentSong', () => {
 
     const subject = mount(CurrentSong, {
       propsData: {
-        song
-      }
+        song,
+      },
     });
 
     const songComponent = subject.find('.qa-song');
@@ -95,8 +95,8 @@ describe('CurrentSong', () => {
   it('renders', () => {
     const subject = mount(CurrentSong, {
       propsData: {
-        song: new SongBuilder().getInstance()
-      }
+        song: new SongBuilder().getInstance(),
+      },
     });
 
     expect(subject.element).toMatchSnapshot();

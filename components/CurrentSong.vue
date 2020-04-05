@@ -20,21 +20,21 @@ export default Vue.extend({
   props: {
     song: {
       required: true,
-      type: Object as () => Song
-    }
+      type: Object as () => Song,
+    },
   },
   computed: {
     albumCover(): AlbumCover | undefined {
       const images: AlbumCover[] = this.song.album.images;
 
-      return images.find(image => image.width > 64 && image.width < 400);
+      return images.find((image) => image.width > 64 && image.width < 400);
     },
     artists() {
       const artists: Artist[] = this.song.artists;
 
       return artists.map(({ name }) => name).join(', ');
-    }
-  }
+    },
+  },
 });
 </script>
 

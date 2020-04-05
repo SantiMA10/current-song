@@ -22,17 +22,16 @@ import Vue from 'vue';
 import { namespace } from 'vuex-class';
 import Component from 'vue-class-component';
 
+import { Song } from '../entities/Song';
 import CurrentSong from '~/components/CurrentSong.vue';
 import Welcome from '~/components/Welcome.vue';
-
-import { Song } from '../entities/Song';
 
 const spotify = namespace('spotify');
 
 @Component({
   components: {
     Welcome,
-    CurrentSong
+    CurrentSong,
   },
   async asyncData({ store }) {
     if (!location.hash.includes('access_token')) {
@@ -46,13 +45,13 @@ const spotify = namespace('spotify');
     await store.dispatch('spotify/fetchCurrentSong', { token });
 
     return {
-      token
+      token,
     };
   },
   mounted() {
     (this as Index).resetTimeout();
-  }
-})
+  },
+} as any)
 export default class Index extends Vue {
   public timeout!: NodeJS.Timeout;
   public token!: string;
