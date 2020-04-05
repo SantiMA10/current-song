@@ -39,20 +39,29 @@ const actions = {
 
 const getters = {
   getSong({ currentPlaying }): Song | null {
-    if (!currentPlaying || currentPlaying.currently_playing_type === 'ad') {
+    if (
+      !currentPlaying ||
+      currentPlaying.currently_playing_type === 'ad' ||
+      currentPlaying.currently_playing_type === 'unknown'
+    ) {
       return null;
     }
 
     if (currentPlaying.currently_playing_type === 'episode') {
+      // eslint-disable-next-line camelcase
+      const { album, artists, name, duration_ms } = currentPlaying.item || {};
+
       return {
-        album: {
+        album: album || {
           name: '',
           images: [{ height: 100, url: '/podcast.png', width: 100 }],
         },
-        artists: [{ name: 'Podcast' }],
-        name: 'Episode',
-        duration_ms: 5 * 1000,
-        progress_ms: 0,
+        artists: artists || [{ name: 'Podcast' }],
+        name: name || 'Episode',
+        // eslint-disable-next-line camelcase
+        duration_ms: duration_ms || 5 * 1000,
+        // eslint-disable-next-line camelcase
+        progress_ms: duration_ms ? currentPlaying.progress_ms : 0,
       };
     }
 
