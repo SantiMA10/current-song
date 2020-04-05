@@ -4,7 +4,9 @@
       <modal name="colorSelector" class="h-screen">
         <chrome-picker v-model="color" class="z-50" @input="updateColor" />
       </modal>
-      <button @click="show()">Color</button>
+      <div class="colorSelector" @click="show()">
+        <v-icon name="droplet" height="20" />
+      </div>
     </div>
     <div class="h-full flex items-center justify-center flex-col">
       <h1 class="text-3xl">
@@ -26,10 +28,12 @@
 import Vue from 'vue';
 import VModal from 'vue-js-modal';
 import { Chrome } from 'vue-color';
+import feather from 'vue-icon';
 
 import LoginWithSpotify from '~/components/LoginWithSpotify.vue';
 
-Vue.use(VModal, { dialog: true });
+Vue.use(VModal);
+Vue.use(feather, 'v-icon');
 
 export default Vue.extend({
   components: {
@@ -69,5 +73,10 @@ export default Vue.extend({
   justify-content: center;
   place-items: center;
   box-shadow: none;
+}
+.colorSelector {
+  cursor: pointer;
+  display: flex;
+  justify-content: flex-end;
 }
 </style>
