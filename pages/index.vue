@@ -101,7 +101,7 @@ export default class Index extends Vue {
   }
 
   public refreshTokenTimeout() {
-    if (!this.resetTimeout) {
+    if (!this.refreshToken) {
       return;
     }
 
@@ -112,36 +112,29 @@ export default class Index extends Vue {
     const whenToRefresh = 3000 * 1000;
 
     this.refreshTimeout = setTimeout(async () => {
-      await this.refreshTokenTimeout();
+      await this.getNewToken();
       this.refreshTokenTimeout();
     }, whenToRefresh);
   }
 
   public async getNewToken() {
-    const {
-      access_token: accessToken,
-      refresh_token: refreshToken,
-    } = (await fetch('https://accounts.spotify.com/api/token', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
-        Authorization: `Basic ${btoa(
-          `${process.env.NUXT_ENV_CLIENT_ID}:${process.env.NUXT_ENV_CLIENT_SECRET}`
-        )}`,
-      },
-      body: qs.stringify({
-        grant_type: 'refresh_token',
-        refresh_token: this.refreshToken,
-        redirect_uri: location.host.includes('localhost')
-          ? 'http://localhost'
-          : `${location.protocol}//${location.host}`,
-      }),
-    }).then((res) => res.json())) as any;
+    const { access_token: accessToken } = (await fetch(
+      'https://accounts.spotify.com/api/token',
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+          Authorization: `Basic ${btoa(
+            `${process.env.NUXT_ENV_CLIENT_ID}:${process.env.NUXT_ENV_CLIENT_SECRET}`
+          )}`,
+        },
+        body: `grant_type=refresh_token&refresh_token=${this.refreshToken}`,
+      }
+    ).then((res) => res.json())) as any;
 
     this.token = accessToken;
-    this.refreshToken = refreshToken;
 
-    location.search = `?access_token=${accessToken}&refresh_token=${refreshToken}`;
+    location.search = `?access_token=${accessToken}&refresh_token=${this.refreshToken}`;
   }
 
   public resetTimeout() {
