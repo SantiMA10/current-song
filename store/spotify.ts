@@ -11,6 +11,8 @@ const state = () => ({
 
 const mutations = {
   [SET_CURRENT_PLAYING](state, currentPlaying) {
+    console.log(currentPlaying);
+
     Vue.set(state, 'currentPlaying', currentPlaying);
   },
   [SET_ERROR](state, error) {
@@ -39,6 +41,21 @@ const getters = {
   getSong({ currentPlaying }): Song | null {
     if (!currentPlaying) {
       return null;
+    }
+
+    debugger;
+
+    if (currentPlaying.currently_playing_type === 'episode') {
+      return {
+        album: {
+          name: '',
+          images: [{ height: 100, url: '/podcast.png', width: 100 }],
+        },
+        artists: [{ name: 'Podcast' }],
+        name: 'Episode',
+        duration_ms: 5 * 1000,
+        progress_ms: 0,
+      };
     }
 
     return {
