@@ -39,11 +39,9 @@ const actions = {
 
 const getters = {
   getSong({ currentPlaying }): Song | null {
-    if (!currentPlaying) {
+    if (!currentPlaying || currentPlaying.currently_playing_type === 'ad') {
       return null;
     }
-
-    debugger;
 
     if (currentPlaying.currently_playing_type === 'episode') {
       return {
