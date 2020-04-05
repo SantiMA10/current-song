@@ -20,7 +20,7 @@ export default class LoginWithSpotify extends Vue {
   public readonly redirectUri!: string;
 
   public get authUrl() {
-    return `https://accounts.spotify.com/authorize?response_type=token&client_id=${
+    return `https://accounts.spotify.com/authorize?response_type=code&client_id=${
       this.clientId
     }&scope=user-read-currently-playing&redirect_uri=${encodeURIComponent(
       this.redirectUri
