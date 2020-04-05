@@ -10,7 +10,7 @@ You can use it live at https://current-song.santiagomartin.dev
 
 ### Environment
 
-You need am environment variable with your Spotify App Client ID called `NUXT_ENV_CLIENT_ID`, you can get yours at the [Spotify Dashboard](https://developer.spotify.com/dashboard)
+You need am environment variable with your Spotify App Client ID called `NUXT_ENV_CLIENT_ID` and Client Secret called `NUXT_ENV_CLIENT_SECRET`, you can get yours at the [Spotify Dashboard](https://developer.spotify.com/dashboard)
 
 ### Nuxt
 
