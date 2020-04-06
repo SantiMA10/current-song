@@ -1,5 +1,8 @@
 <template>
-  <div class="w-full flex items-center justify-center">
+  <div
+    class="w-full flex items-center justify-center"
+    :style="{ backgroundColor: getBackgroundColor }"
+  >
     <img v-if="albumCover" class="h-screen z-10" :src="albumCover.url" />
     <div class="marquee">
       <h1 class="z-0 whitespace-no-wrap text-white qa-song">
@@ -22,6 +25,15 @@ export default Vue.extend({
       required: true,
       type: Object as () => Song,
     },
+    customColor: {
+      required: true,
+      type: String,
+    },
+  },
+  data() {
+    return {
+      color: this.$props.customColor,
+    };
   },
   computed: {
     albumCover(): AlbumCover | undefined {
@@ -33,6 +45,9 @@ export default Vue.extend({
       const artists: Artist[] = this.song.artists;
 
       return artists.map(({ name }) => name).join(', ');
+    },
+    getBackgroundColor() {
+      return sessionStorage.getItem('color');
     },
   },
 });

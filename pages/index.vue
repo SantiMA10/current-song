@@ -1,14 +1,24 @@
 <template>
   <section
-    class="w-full h-screen items-center justify-center flex flex-col bg-black"
+    class="w-auto h-screen bg-black"
+    :style="{ backgroundColor: customColor }"
   >
     <div v-if="error" class="text-white text-3xl">
       😅 Your spotify token is not working, try to login again 😅
     </div>
     <template v-else>
-      <Welcome v-if="showLogin" />
+      <Welcome
+        v-if="showLogin"
+        :customColor="customColor"
+        @updateColorValue="
+          (color) => {
+            customColor = color;
+            updateColorValue(color);
+          }
+        "
+      />
       <template v-else>
-        <CurrentSong v-if="isPlaying" :song="song" />
+        <CurrentSong v-if="isPlaying" :song="song" :customColor="customColor" />
         <div v-else class="text-white text-3xl">
           🎼 You're not listening to music 🎼
         </div>
@@ -33,6 +43,16 @@ const spotify = namespace('spotify');
   components: {
     Welcome,
     CurrentSong,
+  },
+  data() {
+    return {
+      customColor: '#000000',
+    };
+  },
+  methods: {
+    updateColorValue(color) {
+      sessionStorage.setItem('color', color);
+    },
   },
   async asyncData({ store }) {
     let accessToken: string | undefined;
