@@ -9,7 +9,10 @@
     </p>
     <LoginWithSpotify />
     <footer class="text-white pt-4">
-      Made with ❤ by <a href="https://santiagomartin.dev">@SantiMA10</a>
+      Made with ❤️ by
+      <a href="https://github.com/SantiMA10/current-song#contributors-"
+        >awesome people (and bots)</a
+      >
     </footer>
   </div>
 </template>
