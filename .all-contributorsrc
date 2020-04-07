@@ -18,6 +18,15 @@
         "doc",
         "code"
       ]
+    },
+    {
+      "login": "ImgBotApp",
+      "name": "Imgbot",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/31427850?v=4",
+      "profile": "https://imgbot.net",
+      "contributions": [
+        "maintenance"
+      ]
     }
   ],
   "contributorsPerLine": 7,
