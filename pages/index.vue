@@ -54,9 +54,7 @@ const spotify = namespace('spotify');
         body: qs.stringify({
           grant_type: 'authorization_code',
           code: query.code,
-          redirect_uri: location.host.includes('localhost')
-            ? 'http://localhost'
-            : `${location.protocol}//${location.host}`,
+          redirect_uri: `${location.protocol}//${location.host}`,
         }),
       }).then((res) => res.json())) as any);
 
