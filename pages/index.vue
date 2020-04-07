@@ -26,6 +26,7 @@ import qs from 'qs';
 import { Song } from '../entities/Song';
 import CurrentSong from '~/components/CurrentSong.vue';
 import Welcome from '~/components/Welcome.vue';
+import LoginWithSpotify from '~/components/LoginWithSpotify.vue';
 
 const spotify = namespace('spotify');
 
@@ -33,6 +34,7 @@ const spotify = namespace('spotify');
   components: {
     Welcome,
     CurrentSong,
+    LoginWithSpotify,
   },
   async asyncData({ store }) {
     let accessToken: string | undefined;
@@ -96,11 +98,11 @@ export default class Index extends Vue {
 
   @spotify.Action('fetchCurrentSong') public fetchCurrentSong!: Function;
 
-  public get showLogin() {
+  get showLogin() {
     return !this.token;
   }
 
-  public refreshTokenTimeout() {
+  refreshTokenTimeout() {
     if (!this.refreshToken) {
       return;
     }
@@ -117,7 +119,7 @@ export default class Index extends Vue {
     }, whenToRefresh);
   }
 
-  public async getNewToken() {
+  async getNewToken() {
     const { access_token: accessToken } = (await fetch(
       'https://accounts.spotify.com/api/token',
       {
@@ -156,13 +158,3 @@ export default class Index extends Vue {
   }
 }
 </script>
-
-<style>
-.container {
-  margin: 0 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-}
-</style>

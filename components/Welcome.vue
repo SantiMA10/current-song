@@ -1,4 +1,4 @@
-<template>
+<template functional>
   <div class="text-white flex items-center justify-center flex-col">
     <h1 class="text-3xl">
       🎵 Current song 🎵
@@ -13,15 +13,3 @@
     </footer>
   </div>
 </template>
-
-<script lang="ts">
-import Vue from 'vue';
-
-import LoginWithSpotify from '~/components/LoginWithSpotify.vue';
-
-export default Vue.extend({
-  components: {
-    LoginWithSpotify,
-  },
-});
-</script>
