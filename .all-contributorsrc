@@ -1,0 +1,29 @@
+{
+  "files": [
+    "README.md"
+  ],
+  "imageSize": 100,
+  "commit": false,
+  "contributors": [
+    {
+      "login": "SantiMA10",
+      "name": "Santi",
+      "avatar_url": "https://avatars2.githubusercontent.com/u/7255298?v=4",
+      "profile": "http://santiagomartin.dev",
+      "contributions": [
+        "test",
+        "review",
+        "question",
+        "maintenance",
+        "doc",
+        "code"
+      ]
+    }
+  ],
+  "contributorsPerLine": 7,
+  "projectName": "current-song",
+  "projectOwner": "SantiMA10",
+  "repoType": "github",
+  "repoHost": "https://github.com",
+  "skipCi": true
+}
