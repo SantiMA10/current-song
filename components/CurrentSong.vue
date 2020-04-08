@@ -15,30 +15,28 @@ import Vue from 'vue';
 import { AlbumCover } from '../entities/AlbumCover';
 import { Artist } from '../entities/Artist';
 import { Song } from '../entities/Song';
+import { Component, Prop } from '~/node_modules/vue-property-decorator';
 
-export default Vue.extend({
-  props: {
-    song: {
-      required: true,
-      type: Object as () => Song,
-    },
-  },
-  computed: {
-    albumCover(): AlbumCover | undefined {
-      const images: AlbumCover[] = this.song.album.images;
+@Component
+export default class CurrentSong extends Vue {
+  @Prop({ required: true })
+  song!: Song;
 
-      return images.find((image) => image.width > 64 && image.width < 400);
-    },
-    artists() {
-      const artists: Artist[] = this.song.artists;
+  get albumCover(): AlbumCover | undefined {
+    const images: AlbumCover[] = this.song.album.images;
 
-      return artists.map(({ name }) => name).join(', ');
-    },
-  },
-});
+    return images.find((image) => image.width > 64 && image.width < 400);
+  }
+
+  get artists() {
+    const artists: Artist[] = this.song.artists;
+
+    return artists.map(({ name }) => name).join(', ');
+  }
+}
 </script>
 
-<style>
+<style scoped>
 .marquee {
   width: 100%;
   overflow: hidden;
