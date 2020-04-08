@@ -36,6 +36,16 @@
       "contributions": [
         "maintenance"
       ]
+    },
+    {
+      "login": "pmareke",
+      "name": "Pedro López Mareque",
+      "avatar_url": "https://avatars3.githubusercontent.com/u/3502075?v=4",
+      "profile": "https://github.com/pmareke",
+      "contributions": [
+        "maintenance",
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,
